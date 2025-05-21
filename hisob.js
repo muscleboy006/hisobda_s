@@ -13,8 +13,7 @@ const app = express();
 
 // CORS setup
 app.use(cors({
-  origin: ['http://localhost:5173', "https://eb74-95-46-68-143.ngrok-free.app"],
-  // origin: 'https://.netlify.app',
+  origin: ['http://localhost:5173', 'https://hisobda.netlify.app'],
   credentials: true
 }));
 
@@ -32,7 +31,6 @@ app.use('/api/debt-pay/', require('./routes/debtPayment'))
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the API.' });
 });
-  
 
 const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
