@@ -128,6 +128,7 @@ async function initBot() {
     
         baseDate.setMonth(baseDate.getMonth() + 1);
         user.premiumEndsAt = baseDate;
+        user.isPremium = true
         await user.save();
     
         bot.sendMessage(chatId, `✅ premiumEndsAt продлён на месяц:\n<i>${user.premiumEndsAt}</i>`, {
