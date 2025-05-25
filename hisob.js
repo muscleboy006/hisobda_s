@@ -13,7 +13,7 @@ const app = express();
 
 // CORS setup
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://hisobda.netlify.app', 'https://hisobda.vercel.app'],
+  origin: ['http://localhost:5173', 'https://hisobda.vercel.app'],
   credentials: true
 }));
 
