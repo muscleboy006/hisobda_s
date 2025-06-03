@@ -13,7 +13,7 @@ const app = express();
 
 // CORS setup
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://hisobda.vercel.app'],
+  origin: ['http://localhost:5173', 'https://hisobda.vercel.app', 'https://e9da-95-46-70-225.ngrok-free.app'],
   credentials: true
 }));
 
