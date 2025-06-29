@@ -16,15 +16,15 @@ class TelegramBotService {
   async handleStart(msg) {
     const chatId = msg.chat.id.toString();
     const telegramId = msg.from.id.toString();
-    const referralParam = msg.text.split(' ')[1];
+    // const referralParam = msg.text.split(' ')[1];
     let user = await User.findOne({ telegramId });
     await this.sendMainMenu(chatId);
 
     if (!user) {
-      let referrerUser = null;
-      if (referralParam) {
-        referrerUser = await User.findOne({ telegramId: referralParam });
-      }
+      // let referrerUser = null;
+      // if (referralParam) {
+      //   referrerUser = await User.findOne({ telegramId: referralParam });
+      // }
 
       user = new User({
         telegramId,
@@ -40,16 +40,16 @@ class TelegramBotService {
         `🆕 Yangi foydalanuvchi ro'yxatdan o'tdi:\n\nIsmi: ${user.first_name}\nFamiliyasi: ${user.last_name}\nUsername: @${msg.from.username}\nTelegram ID: ${user.telegramId}`
       );
 
-      if (referrerUser) {
-        referrerUser.referrals.push(user._id);
-        await referrerUser.save();
+      // if (referrerUser) {
+      //   referrerUser.referrals.push(user._id);
+      //   await referrerUser.save();
 
         // 👉 отправляем сообщение пригласившему
-        await this.bot.sendMessage(
-        referrerUser.telegramId,
-        `🎉 Siz taklif qilgan foydalanuvchi (${user.first_name}) ro'yxatdan o'tdi!`
-      );
-      }
+      //   await this.bot.sendMessage(
+      //   referrerUser.telegramId,
+      //   `🎉 Siz taklif qilgan foydalanuvchi (${user.first_name}) ro'yxatdan o'tdi!`
+      // );
+      // }
     }
   }
 
@@ -124,41 +124,41 @@ class TelegramBotService {
       });
     }
 
-    if (text === "📣 Do'stlarni taklif qilish") {
-        const user = await User.findOne({ telegramId: msg.from.id.toString() });
+    // if (text === "📣 Do'stlarni taklif qilish") {
+    //     const user = await User.findOne({ telegramId: msg.from.id.toString() });
       
-        const referralLink = `https://t.me/hisobda_app_bot?start=${user.telegramId}`;
-        const invitedCount = user.referrals.length;
-        const targetCount = 5;
-        const remaining = targetCount - invitedCount;
+        // const referralLink = `https://t.me/hisobda_app_bot?start=${user.telegramId}`;
+        // const invitedCount = user.referrals.length;
+        // const targetCount = 5;
+        // const remaining = targetCount - invitedCount;
       
-        let bonusMessage = '';
-        if (invitedCount >= targetCount) {
-          bonusMessage = `🎁 Siz 5 ta do'stni taklif qildingiz va 1 oylik bepul Premium oldingiz!`;
-        } else {
-          bonusMessage = `🔔 Siz ${invitedCount} ta do'stni taklif qildingiz.\n${remaining} ta do'st taklif qilsangiz — 1 oylik bepul Premium olasiz! \n\nPastdagi habarni yuboring👇`;
-        }
+        // let bonusMessage = '';
+        // if (invitedCount >= targetCount) {
+        //   bonusMessage = `🎁 Siz 5 ta do'stni taklif qildingiz va 1 oylik bepul Premium oldingiz!`;
+        // } else {
+        //   bonusMessage = `🔔 Siz ${invitedCount} ta do'stni taklif qildingiz.\n${remaining} ta do'st taklif qilsangiz — 1 oylik bepul Premium olasiz! \n\nPastdagi habarni yuboring👇`;
+        // }
       
         // Сообщение для самого пользователя
-        await this.bot.sendMessage(chatId, 
-          `${bonusMessage}`
-        );
+        // await this.bot.sendMessage(chatId, 
+        //   `${bonusMessage}`
+        // );
       
         // Красивое короткое рекламное сообщение для пересылки
-        const shareMessage = 
-        `📒 *Hisobda* — Shaxsiy moliyangizni boshqarish uchun eng oddiy yechim!\n\n` +
+        // const shareMessage = 
+        // `📒 *Hisobda* — Shaxsiy moliyangizni boshqarish uchun eng oddiy yechim!\n\n` +
       
-        `💰 Xarajat va daromadlarni nazorat qiling\n` +
-        `📊 Statistika, tahlil va hisobotlar — hammasi bitta joyda\n` +
-        `🔒 Offline rejim, maxfiylik va xavfsizlik\n\n` +
+        // `💰 Xarajat va daromadlarni nazorat qiling\n` +
+        // `📊 Statistika, tahlil va hisobotlar — hammasi bitta joyda\n` +
+        // `🔒 Offline rejim, maxfiylik va xavfsizlik\n\n` +
       
-        `📲 [Ilovani ishga tushurish](${referralLink})\n\n` +
+        // `📲 [Ilovani ishga tushurish](${referralLink})\n\n` +
       
-        `✅ Pulni qayerga sarflayotganingizni bilib boring — *Hisobda* bilan!`;      
+      //   `✅ Pulni qayerga sarflayotganingizni bilib boring — *Hisobda* bilan!`;      
       
-        await this.bot.sendMessage(chatId, shareMessage, { parse_mode: 'Markdown' });
-        return;
-      }
+      //   await this.bot.sendMessage(chatId, shareMessage, { parse_mode: 'Markdown' });
+      //   return;
+      // }
   }
 
   async sendMainMenu(chatId) {
@@ -169,7 +169,7 @@ class TelegramBotService {
         `📊 Statistika, tahlil va hisobotlar — hammasi bitta joyda\n` +
         `🔒 Offline rejim, maxfiylik va xavfsizlik\n\n` +
       
-        `📲 [Ilovani ishga tushurish](${referralLink})\n\n` +
+        // `📲 [Ilovani ishga tushurish](${referralLink})\n\n` +
       
         `✅ Pulni qayerga sarflayotganingizni bilib boring — *Hisobda* bilan!`; 
     await this.bot.sendMessage(chatId, shareMessage, { parse_mode: 'Markdown' })
@@ -178,7 +178,7 @@ class TelegramBotService {
         keyboard: [
           [{ text: "Asosiy" }, { text: "Qarzlar" }],
           [{ text: "Hisobot" }, { text: "Sozlama" }],
-          [{ text: "📣 Do'stlarni taklif qilish" }]
+          // [{ text: "📣 Do'stlarni taklif qilish" }]
         ],
         resize_keyboard: true
       }

@@ -3,10 +3,10 @@ require('dotenv').config();
 const cors = require('cors');
 const initDB = require('./config/db')
 const initBot = require('./bot');
-const telegramBotService = require('./authBot');
 
 initBot();
 initDB()
+const telegramBotService = require('./authBot');
 
 require('./config/db');
 
