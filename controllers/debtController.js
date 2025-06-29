@@ -6,8 +6,10 @@ const mongoose = require('mongoose');
 
 exports.createDebt = async (req, res) => {
   try {
-    const { walletId, type, amount, person, note } = req.body;
+    const { type, amount, person, note } = req.body;
     const userId = req.user.id;
+
+    const walletId = await Wallet.findOne({ userId })
 
     // Validate inputs
     if (!amount || isNaN(parseFloat(amount))) {
@@ -65,7 +67,6 @@ exports.getDebts = async (req, res) => {
   try {
     const userId = req.user.id;
     const {
-      // walletId,
       limit = 50,
       skip = 0,
       period = 'Bu oy',
@@ -79,9 +80,6 @@ exports.getDebts = async (req, res) => {
     const query = {
       userId: new mongoose.Types.ObjectId(userId)
     };
-
-    // Фильтрация по кошельку
-    // if (walletId) query.walletId = new mongoose.Types.ObjectId(walletId);
 
     // Фильтрация по статусу
     if (status && ['active', 'paid'].includes(status)) {

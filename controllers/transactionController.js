@@ -6,10 +6,11 @@ const Decimal = require('decimal.js');
 // ➕ Qo‘shish
 exports.addTransaction = async (req, res) => {
   try {
-    const { walletId, type, amount, category, note, date } = req.body;
+    const { type, amount, category, note, date } = req.body;
     const userId = req.user.id;
 
-    const wallet = await Wallet.findOne({ _id: walletId, userId });
+    const wallet = await Wallet.findOne({ userId });
+    
     if (!wallet) return res.status(404).json({ error: 'Kassa topilmadi.' });
 
     const currentBalance = new Decimal(wallet.balance.toString());
@@ -23,7 +24,7 @@ exports.addTransaction = async (req, res) => {
 
     const transaction = await Transaction.create({
       userId,
-      walletId,
+      walletId: wallet._id,
       type,
       amount: mongoose.Types.Decimal128.fromString(transactionAmount.toString()),
       category,
@@ -44,7 +45,9 @@ exports.addTransaction = async (req, res) => {
 exports.getAllTransactions = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { walletId, limit = 50, skip = 0, period = 'Bu oy', startDate, endDate, search, category } = req.query;
+    const { limit = 50, skip = 0, period = 'Bu oy', startDate, endDate, search, category } = req.query;
+
+    const walletId = await Wallet.findOne({ userId });
 
     const query = { userId: new mongoose.Types.ObjectId(userId) };
     if (walletId) query.walletId = walletId;
