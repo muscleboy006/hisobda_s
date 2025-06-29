@@ -1,6 +1,7 @@
 require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 const User = require('./models/User');
+const Wallet = require('./models/Wallet');
 
 const SITE_URL = process.env.SITE_URL
 
@@ -33,6 +34,12 @@ class TelegramBotService {
         auth_date: Date.now()
       });
       await user.save();
+      // Создаём кошелёк по умолчанию
+      await Wallet.create({
+        userId: user._id,
+        name: 'Naqd',
+        balance: 0
+      });
 
        // 👉 Сообщаем админу один раз
       await this.bot.sendMessage(
