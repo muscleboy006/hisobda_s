@@ -39,6 +39,120 @@ function generateToken(userId) {
   });
 }
 
+// Функция для парсинга initData
+const parseInitData = (initData) => {
+  const params = new URLSearchParams(initData);
+  const data = {};
+  
+  for (const [key, value] of params.entries()) {
+    if (key === 'user') {
+      data.user = JSON.parse(value);
+    } else {
+      data[key] = value;
+    }
+  }
+  
+  return data;
+};
+
+// Функция для проверки подлинности initData
+const validateInitData = (initData, botToken) => {
+  const params = new URLSearchParams(initData);
+  const hash = params.get('hash');
+  params.delete('hash');
+  
+  // Сортируем параметры
+  const sortedParams = Array.from(params.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, value]) => `${key}=${value}`)
+    .join('\n');
+  
+  // Создаем секретный ключ
+  const secretKey = crypto.createHmac('sha256', 'WebAppData').update(botToken).digest();
+  
+  // Создаем хеш для проверки
+  const calculatedHash = crypto.createHmac('sha256', secretKey).update(sortedParams).digest('hex');
+  
+  return calculatedHash === hash;
+};
+
+// Основной контроллер для initData
+const authTelegramInitData = async (req, res) => {
+  const { initData } = req.body;
+
+  if (!initData) {
+    return res.status(400).json({ success: false, error: 'Отсутствуют данные аутентификации' });
+  }
+
+  try {
+    // Парсим initData
+    const parsedData = parseInitData(initData);
+    
+    if (!parsedData.user) {
+      return res.status(400).json({ success: false, error: 'Отсутствуют данные пользователя' });
+    }
+
+    // Проверяем возраст данных (не более 1 часа)
+    const authDate = parseInt(parsedData.auth_date);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (currentTime - authDate > 3600) {
+      return res.status(401).json({ success: false, error: 'Данные аутентификации устарели' });
+    }
+
+    // Проверяем подлинность данных
+    if (!validateInitData(initData, BOT_TOKEN)) {
+      return res.status(401).json({ success: false, error: 'Неверные данные аутентификации' });
+    }
+
+    const telegramUser = parsedData.user;
+    
+    let user = await User.findOne({ telegramId: telegramUser.id });
+
+    if (user) {
+      // Обновляем данные существующего пользователя
+      user.first_name = telegramUser.first_name;
+      user.last_name = telegramUser.last_name || '';
+      user.username = telegramUser.username || '';
+      user.auth_date = authDate;
+      user.lastLogin = Date.now();
+      await user.save();
+
+    } else {
+      // Создаём нового пользователя
+      user = new User({
+        telegramId: telegramUser.id,
+        first_name: telegramUser.first_name,
+        last_name: telegramUser.last_name || '',
+        username: telegramUser.username || '',
+        auth_date: authDate
+      });
+      await user.save();
+    }
+
+    // Генерируем токен и возвращаем
+    const token = generateToken(user._id);
+    const userData = {
+      id: user.telegramId,
+      _id: user._id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      username: user.username,
+      auth_date: user.auth_date
+    };
+
+    res.json({
+      success: true,
+      user: userData,
+      token,
+      walletId: user.walletId || null // если у вас есть walletId
+    });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({ success: false, error: 'Ошибка сервера' });
+  }
+};
+
 // Эндпоинт для проверки аутентификации
 const authTelegram = async (req, res) => {
   const telegramData = req.body;
@@ -214,6 +328,7 @@ const accessStatus = async (req, res) => {
 
 module.exports = {
     authTelegram,
+    authTelegramInitData,
     userProfile,
     wallet,
     verify,

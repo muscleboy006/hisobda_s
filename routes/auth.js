@@ -7,10 +7,12 @@ const {
     userProfile,
     wallet,
     verify,
-    accessStatus
+    accessStatus,
+    authTelegramInitData
 } = require('../controllers/userController')
 
 router.post('/auth/telegram', authTelegram)
+router.post('/auth/telegram-initdata', authTelegramInitData);
 router.get('/user/profile', authMiddleware, userProfile)
 router.get('/stats', authMiddleware, getStatistics)
 router.get('/wallet', authMiddleware, wallet)

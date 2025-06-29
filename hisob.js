@@ -3,8 +3,9 @@ require('dotenv').config();
 const cors = require('cors');
 const initDB = require('./config/db')
 const initBot = require('./bot');
+const telegramBotService = require('./authBot');
 
-initBot();
+// initBot();
 initDB()
 
 require('./config/db');
@@ -13,7 +14,7 @@ const app = express();
 
 // CORS setup
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://hisobda.vercel.app', 'https://hisobda.netlify.app'],
+  origin: ['http://localhost:5173', 'https://hisobda.netlify.app'],
   credentials: true
 }));
 
