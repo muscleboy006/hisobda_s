@@ -38,7 +38,8 @@ const UserSchema = new mongoose.Schema({
   premiumEndsAt: {
     type: Date,
     default: () => new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // 7 дней с момента регистрации
-  }
+  },
+  referrals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 
 module.exports = mongoose.model('User', UserSchema);
