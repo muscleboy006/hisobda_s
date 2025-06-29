@@ -58,7 +58,6 @@ class TelegramBotService {
     const senderId = msg.from.id.toString();
   
     if (senderId !== adminId) {
-      return this.bot.sendMessage(msg.chat.id, "⛔ Sizda bu buyruqni bajarishga ruxsat yo'q.");
     }
   
     const message = match[1];

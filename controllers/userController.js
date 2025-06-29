@@ -68,10 +68,9 @@ const validateInitData = (initData, botToken) => {
     .join('\n');
   
   // Создаем секретный ключ
-  // const secretKey = crypto.createHmac('sha256', 'WebAppData').update(botToken).digest();
-  const secretKey = crypto.createHash('sha256').update(botToken).digest(); // ✅ по документации
+  const secretKey = crypto.createHmac('sha256', 'WebAppData').update(botToken).digest();
+  // const secretKey = crypto.createHash('sha256').update(botToken).digest(); // ✅ по документации
 
-  
   // Создаем хеш для проверки
   const calculatedHash = crypto.createHmac('sha256', secretKey).update(sortedParams).digest('hex');
   
