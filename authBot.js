@@ -37,7 +37,7 @@ class TelegramBotService {
        // 👉 Сообщаем админу один раз
       await this.bot.sendMessage(
         '7890054155',
-        `🆕 Yangi foydalanuvchi ro'yxatdan o'tdi:\n\nIsmi: ${user.first_name}\nFamiliyasi: ${user.last_name}\nUsername: ${msg.from.username}\nTelegram ID: ${user.telegramId}`
+        `🆕 Yangi foydalanuvchi ro'yxatdan o'tdi:\n\nIsmi: ${user.first_name}\nFamiliyasi: ${user.last_name}\nUsername: @${msg.from.username}\nTelegram ID: ${user.telegramId}`
       );
 
       if (referrerUser) {

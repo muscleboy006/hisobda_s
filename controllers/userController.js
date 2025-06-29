@@ -3,7 +3,7 @@ const User = require('../models/User');
 const Wallet = require('../models/Wallet')
 const crypto = require('crypto');
 
-const BOT_TOKEN = process.env.BOT_TOKEN; // Токен вашего Telegram бота
+const BOT_TOKEN = process.env.BOT_AUTH_TOKEN; // Токен вашего Telegram бота
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Проверка данных аутентификации Telegram

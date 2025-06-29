@@ -5,7 +5,7 @@ const initDB = require('./config/db')
 const initBot = require('./bot');
 const telegramBotService = require('./authBot');
 
-// initBot();
+initBot();
 initDB()
 
 require('./config/db');
