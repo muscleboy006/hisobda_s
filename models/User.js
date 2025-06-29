@@ -35,14 +35,9 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  // === Новые поля ===
-  isPremium: {
-    type: Boolean,
-    default: true
-  },
   premiumEndsAt: {
     type: Date,
-    default: () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 дней с момента регистрации
+    default: () => new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // 7 дней с момента регистрации
   }
 });
 

@@ -300,32 +300,25 @@ const verify = (req, res) => {
   });
 };
 
-// Проверка доступа: премиум или пробный период
 const accessStatus = async (req, res) => {
   try {
     const user = req.user;
     const now = new Date();
-
-    const isPremium = user.isPremium;
     const premiumEndsAt = user.premiumEndsAt ? new Date(user.premiumEndsAt) : null;
-    const isPremiumActive = isPremium && premiumEndsAt && now <= premiumEndsAt;
 
-    // Если премиум истёк — обновим статус в БД
-    if (isPremium && !isPremiumActive) {
-      user.isPremium = false;
-      await user.save(); // сохраняем обновление
-    }
+    const isPremium = premiumEndsAt && premiumEndsAt > now;
 
     res.json({
       success: true,
-      isPremium: user.isPremium, // актуальное значение после возможного сброса
-      premiumEndsAt: user.premiumEndsAt,
+      premiumEndsAt,
+      isPremium,
     });
   } catch (error) {
     console.error('Ошибка при проверке доступа:', error);
     res.status(500).json({ success: false, error: 'Ошибка сервера' });
   }
 };
+
 
 module.exports = {
     authTelegram,

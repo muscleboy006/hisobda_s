@@ -75,7 +75,6 @@ async function initBot() {
           `<b>Ism:</b> ${user.first_name}\n` +
           `<b>Familiya:</b> ${user.last_name}\n` +
           `<b>username:</b> @${user.username}\n` +
-          `<b>isPremium:</b> ${user.isPremium}\n` +
           `<b>userCreatedAt:</b> <i>${user.createdAt}</i>\n` +
           `<b>userpremiumEndsAt:</b> <i>${user.premiumEndsAt}</i>\n`;
 
@@ -128,7 +127,6 @@ async function initBot() {
     
         baseDate.setMonth(baseDate.getMonth() + 1);
         user.premiumEndsAt = baseDate;
-        user.isPremium = true
         await user.save();
     
         bot.sendMessage(chatId, `✅ premiumEndsAt продлён на месяц:\n<i>${user.premiumEndsAt}</i>`, {

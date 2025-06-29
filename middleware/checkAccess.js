@@ -5,7 +5,7 @@ const checkAccess = async function checkAccess(req, res, next) {
   
     const now = new Date();
   
-    if (user.isPremium || now < user.premiumEndsAt) {
+    if (now < user.premiumEndsAt) {
       return next(); // доступ разрешён
     }
   
