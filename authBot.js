@@ -146,14 +146,15 @@ class TelegramBotService {
       
         // Красивое короткое рекламное сообщение для пересылки
         const shareMessage = 
-      `💍 *Nikoh Uz* — Jiddiy tanishuvlar platformasi\n\n`+
+        `📒 *Hisobda* — Shaxsiy moliyangizni boshqarish uchun eng oddiy yechim!\n\n` +
       
-      `🔥 Xavfsiz • Oson • Ishonchli\n\n`+
+        `💰 Xarajat va daromadlarni nazorat qiling\n` +
+        `📊 Statistika, tahlil va hisobotlar — hammasi bitta joyda\n` +
+        `🔒 Offline rejim, maxfiylik va xavfsizlik\n\n` +
       
-      `👫 O'z nasibangizni toping!\n`+
-      `👉 [Ro'yxatdan o'tish](${referralLink})\n\n`+
+        `📲 [Ilovani ishga tushurish](${referralLink})\n\n` +
       
-      `✨ *Baxtli oila qurish uchun birinchi qadam!*`
+        `✅ Pulni qayerga sarflayotganingizni bilib boring — *Hisobda* bilan!`;      
       
         await this.bot.sendMessage(chatId, shareMessage, { parse_mode: 'Markdown' });
         return;
@@ -161,6 +162,17 @@ class TelegramBotService {
   }
 
   async sendMainMenu(chatId) {
+    const shareMessage = 
+        `📒 *Hisobda* — Shaxsiy moliyangizni boshqarish uchun eng oddiy yechim!\n\n` +
+      
+        `💰 Xarajat va daromadlarni nazorat qiling\n` +
+        `📊 Statistika, tahlil va hisobotlar — hammasi bitta joyda\n` +
+        `🔒 Offline rejim, maxfiylik va xavfsizlik\n\n` +
+      
+        `📲 [Ilovani ishga tushurish](${referralLink})\n\n` +
+      
+        `✅ Pulni qayerga sarflayotganingizni bilib boring — *Hisobda* bilan!`; 
+    await this.bot.sendMessage(chatId, shareMessage, { parse_mode: 'Markdown' })
     await this.bot.sendMessage(chatId, "👇 Bo'limlardan birini tanlang:", {
       reply_markup: {
         keyboard: [
