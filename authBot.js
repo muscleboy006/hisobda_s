@@ -178,15 +178,23 @@ class TelegramBotService {
       
       
         `✅ Pulni qayerga sarflayotganingizni bilib boring — *Hisobda* bilan!`; 
-    await this.bot.sendMessage(chatId, shareMessage, { parse_mode: 'Markdown' })
-    await this.bot.sendMessage(chatId, "👇 Bo'limlardan birini tanlang:", {
+    await this.bot.sendMessage(chatId, shareMessage, 
+      { 
+        parse_mode: 'Markdown', 
+        reply_markup: {
+          keyboard: [
+            [{ text: "Asosiy" }, { text: "Qarzlar" }],
+            [{ text: "Hisobot" }, { text: "Sozlama" }],
+            [{ text: "📣 Do'stlarni taklif qilish" }]
+          ],
+          resize_keyboard: true
+        }
+      })
+    await this.bot.sendMessage(chatId, "Ilovadan foydalanishni boshlashingiz mumkun!:", {
       reply_markup: {
-        keyboard: [
-          [{ text: "Asosiy" }, { text: "Qarzlar" }],
-          [{ text: "Hisobot" }, { text: "Sozlama" }],
-          [{ text: "📣 Do'stlarni taklif qilish" }]
-        ],
-        resize_keyboard: true
+        inline_keyboard: [[
+          { text: "Kirish", web_app: { url: `${SITE_URL}/#/dashboard` } }
+        ]]
       }
     });
   }  
