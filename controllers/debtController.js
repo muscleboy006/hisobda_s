@@ -1,5 +1,6 @@
 const Debt = require('../models/Debt');
 const DebtPayment = require('../models/DebtPayment');
+const User = require('../models/User');
 const Wallet = require('../models/Wallet');
 const Decimal = require('decimal.js');
 const mongoose = require('mongoose');
@@ -53,6 +54,8 @@ exports.createDebt = async (req, res) => {
       person,
       note
     });
+
+    await User.findByIdAndUpdate(userId, { $inc: { dataCount: 1 } })
 
     res.status(201).json(debt);
   } catch (err) {

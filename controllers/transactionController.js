@@ -2,6 +2,7 @@ const Transaction = require('../models/Transaction');
 const Wallet = require('../models/Wallet');
 const mongoose = require('mongoose');
 const Decimal = require('decimal.js');
+const User = require('../models/User');
 
 // ➕ Qo‘shish
 exports.addTransaction = async (req, res) => {
@@ -31,6 +32,8 @@ exports.addTransaction = async (req, res) => {
       note,
       date
     });
+
+    await User.findByIdAndUpdate(userId, { $inc: { dataCount: 1 } })
 
     wallet.balance = mongoose.Types.Decimal128.fromString(newBalance.toString());
     await wallet.save();

@@ -305,13 +305,21 @@ const accessStatus = async (req, res) => {
     const user = req.user;
     const now = new Date();
     const premiumEndsAt = user.premiumEndsAt ? new Date(user.premiumEndsAt) : null;
+    const dataCount = user.dataCount || 0;
 
-    const isPremium = premiumEndsAt && premiumEndsAt > now;
+    let isPremium;
+
+    if (dataCount <= 10) {
+      isPremium = true;
+    } else {
+      isPremium = premiumEndsAt && premiumEndsAt > now;
+    }
 
     res.json({
       success: true,
-      premiumEndsAt,
       isPremium,
+      dataCount,
+      premiumEndsAt,
     });
   } catch (error) {
     console.error('Ошибка при проверке доступа:', error);

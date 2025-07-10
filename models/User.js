@@ -35,6 +35,10 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  dataCount: {
+    type: Number,
+    default: 0
+  },
   premiumEndsAt: {
     type: Date,
     default: () => new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) // 7 дней с момента регистрации

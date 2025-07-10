@@ -2,6 +2,7 @@ const Decimal = require('decimal.js');
 const DebtPayment = require('../models/DebtPayment');
 const Debt = require('../models/Debt');
 const Wallet = require('../models/Wallet');
+const User = require('../models/User');
 
 // Yaratish
 exports.createPayment = async (req, res) => {
@@ -72,6 +73,8 @@ exports.createPayment = async (req, res) => {
       amount: amountDecimal.toString(),
       paidAt: new Date()
     });
+
+    await User.findByIdAndUpdate(userId, { $inc: { dataCount: 1 } })
 
     // Update the wallet balance
     wallet.balance = walletBalance.toString();
