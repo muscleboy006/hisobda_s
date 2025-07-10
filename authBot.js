@@ -81,6 +81,7 @@ class TelegramBotService {
         sent++;
       } catch (err) {
         failed++;
+        await User.deleteOne({ telegramId: user.telegramId });
       }
     }
   
