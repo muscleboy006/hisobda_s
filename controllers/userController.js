@@ -309,7 +309,7 @@ const accessStatus = async (req, res) => {
 
     let isPremium;
 
-    if (dataCount <= 10) {
+    if (dataCount <= 3) {
       isPremium = true;
     } else {
       isPremium = premiumEndsAt && premiumEndsAt > now;
