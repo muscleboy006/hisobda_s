@@ -4,7 +4,7 @@ const cors = require('cors');
 const initDB = require('./config/db')
 const initBot = require('./bot');
 const telegramBotService = require('./authBot');
-const autoRespond = require('./autoRespond')
+// const autoRespond = require('./autoRespond')
 
 initBot();
 initDB()
